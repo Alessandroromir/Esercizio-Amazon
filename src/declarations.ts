@@ -30,7 +30,6 @@ export interface Product {
   description: string;
   cover: string;
   quantity: number;
-  idSeller: User['id'];
 }
 
 export interface Products {
