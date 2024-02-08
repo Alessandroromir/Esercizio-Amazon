@@ -11,6 +11,7 @@ import {
   Cart,
   User,
 } from './declarations';
+import { v4 as uuidv4 } from 'uuid';
 
 /*export class AmazonApp {
   name: string = 'AmazonApp';
@@ -60,16 +61,68 @@ export class AmazonApp {
 
   getUserLogged() {}
 
-  addProductToStore() {}
-  removeProductFromStore() {}
+  addProductToStore() {
+    const newId = uuidv4();
+    //login();
+    if (!!this.#userLogged != null) {
+      if (!!this.#users.isBusiness == true) {
+        const newProduct: Product = {
+          isAvailable: true,
+          id: newId,
+          name: 'name',
+          price: 50,
+          description: 'questo è un nuovo prodotto',
+          cover: 'non lo so',
+          quantity: 60,
+        };
+        this.#products = { ...this.#products, newProduct };
+        return this.#products;
+      } else throw new Error('Non hai un account business');
+    } else throw new Error('Non sei loggato');
+  }
+
+  removeProductFromStore(productId: Product['id']): AmazonApp {
+    //login();
+    if (!!this.#userLogged != null) {
+      if (!!this.#users.isBusiness == true) {
+        if (productId in this.#products) {
+          delete this.#products[productId];
+          return this;
+        } else {
+          throw new Error('Il prodotto non esiste.');
+        }
+      } else {
+        throw new Error('Non hai un account business.');
+      }
+    } else {
+      throw new Error('Non sei loggato.');
+    }
+  }
+
   getProduct() {}
-  addProductToCart() {}
+  addProductToCart(productId: Product['id']) {
+    //login();
+    if (!!this.#userLogged != null) {
+      if (productId in this.#products) {
+        const productToAdd = this.#products[productId];
+        this.#carts[productId] = productToAdd;
+        return this.#carts;
+      } else {
+        throw new Error('Il prodotto non esiste.');
+      }
+    } else {
+      throw new Error('Non sei loggato');
+    }
+  }
+
   removeProductFromCart() {}
   checkout() {}
 
   upgradeUserToSeller() {}
 
-  addCategory() {}
+  addCategory() {
+    const id = uuidv4();
+  }
   removeCategory() {}
   getCategories() {}
 
